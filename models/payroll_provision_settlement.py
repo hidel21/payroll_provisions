@@ -26,8 +26,6 @@ class PayrollProvisionSettlement(models.Model):
         comodel_name="payroll.provision.type",
         string="Prestación",
         required=True,
-        readonly=False,
-        states={"posted": [("readonly", True)], "cancel": [("readonly", True)]},
         tracking=True,
     )
     company_id = fields.Many2one(
