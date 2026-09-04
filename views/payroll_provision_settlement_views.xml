@@ -62,6 +62,11 @@
                         <field name="cutoff_warning" readonly="1" nolabel="1"/>
                     </div>
 
+                    <div class="alert alert-danger" role="alert"
+                         invisible="not transfer_warning">
+                        <field name="transfer_warning" readonly="1" nolabel="1"/>
+                    </div>
+
                     <group>
                         <group>
                             <field name="type_id"

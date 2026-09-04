@@ -71,6 +71,7 @@ class PayrollProvisionSettlement(models.Model):
         copy=False,
     )
     cutoff_warning = fields.Char(compute="_compute_cutoff_warning")
+    transfer_warning = fields.Char(compute="_compute_transfer_warning")
 
     total_provisioned = fields.Monetary(
         compute="_compute_totals", store=True, string="Total provisionado"
@@ -120,6 +121,91 @@ class PayrollProvisionSettlement(models.Model):
                 )
             else:
                 liq.cutoff_warning = False
+
+    @api.depends("type_id", "date_cut", "company_id")
+    def _compute_transfer_warning(self):
+        """Avisa si esa prestación ya se está trasladando por el recibo.
+
+        La prima tiene sus propias reglas salariales que hacen el traslado
+        —PROVPRIMAAC saca de la 26 y NETO_PRIMA crea el por pagar—. Liquidar
+        además por aquí la sacaría dos veces.
+
+        Se miran las dos vías, porque el riesgo no aparece a la vez en ambas:
+
+        * **Contabilidad** — un débito en la cuenta de provisión. Provisionar
+          solo genera créditos, así que un débito significa que alguien ya sacó
+          saldo por otro camino.
+        * **Recibos de nómina** — una regla salarial que debita esa misma
+          cuenta, aunque el recibo siga en borrador. Es el caso real de junio de
+          2026: diez recibos con el traslado calculado y sin contabilizar. Al
+          confirmarlos aparecería el débito, y para entonces esta liquidación ya
+          estaría hecha.
+
+        Avisa y no impide: un débito puede ser un ajuste legítimo, y quien
+        liquida sabe distinguirlo mirando el asiento.
+        """
+        for liq in self:
+            liq.transfer_warning = False
+            if not liq.type_id or not liq.date_cut or liq.state != "draft":
+                continue
+            cuenta = liq.type_id.provision_account_id
+            inicio = liq.date_cut.replace(day=1)
+
+            debitos = (
+                self.env["account.move.line"]
+                .sudo()
+                .search_count(
+                    [
+                        ("account_id", "=", cuenta.id),
+                        ("company_id", "=", liq.company_id.id),
+                        ("parent_state", "=", "posted"),
+                        ("date", ">=", inicio),
+                        ("date", "<=", liq.date_cut),
+                        ("debit", ">", 0),
+                    ]
+                )
+            )
+
+            recibos = (
+                self.env["hr.payslip.line"]
+                .sudo()
+                .search(
+                    [
+                        ("salary_rule_id.account_debit", "=", cuenta.id),
+                        ("slip_id.date_from", ">=", inicio),
+                        ("slip_id.date_from", "<=", liq.date_cut),
+                        ("total", "!=", 0),
+                    ]
+                )
+            )
+
+            if not debitos and not recibos:
+                continue
+
+            partes = []
+            if debitos:
+                partes.append(
+                    _("%s apunte(s) contables ya sacan saldo de la cuenta", debitos)
+                )
+            if recibos:
+                partes.append(
+                    _(
+                        "%(n)s recibo(s) de nómina llevan el traslado por la "
+                        "regla %(regla)s, %(borradores)s de ellos todavía en "
+                        "borrador",
+                        n=len(recibos),
+                        regla=recibos[0].salary_rule_id.code,
+                        borradores=len(
+                            recibos.filtered(lambda l: l.slip_id.state == "draft")
+                        ),
+                    )
+                )
+            liq.transfer_warning = _(
+                "En %(mes)s, %(detalle)s. Si esa prestación ya se traslada "
+                "desde la nómina, liquidarla aquí la sacaría dos veces.",
+                mes=liq.date_cut.strftime("%m/%Y"),
+                detalle=" y ".join(partes),
+            )
 
     # ------------------------------------------------------------------
     # Cargar el acumulado
