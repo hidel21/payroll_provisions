@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_provision_settlement" model="ir.sequence">
+        <field name="name">Liquidación de prestaciones</field>
+        <field name="code">payroll.provision.settlement</field>
+        <field name="prefix">LP/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

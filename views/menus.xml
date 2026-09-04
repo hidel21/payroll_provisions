@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Cuelga de Contabilidad y no de Nómina a propósito: lo que hace es
+         mover saldos entre cuentas de pasivo, y quien responde de eso es
+         contabilidad. Restringido al mismo grupo que ya puede tocar asientos. -->
+    <menuitem id="menu_provisions_root"
+              name="Prestaciones sociales"
+              parent="account.menu_finance_entries"
+              groups="account.group_account_manager"
+              sequence="25"/>
+
+    <menuitem id="menu_provision_settlement"
+              name="Liquidaciones"
+              parent="menu_provisions_root"
+              action="action_provision_settlement"
+              sequence="10"/>
+
+    <menuitem id="menu_provision_type"
+              name="Configuración de prestaciones"
+              parent="menu_provisions_root"
+              action="action_provision_type"
+              sequence="20"/>
+
+</odoo>

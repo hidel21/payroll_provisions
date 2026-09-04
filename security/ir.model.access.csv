@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_provision_type_manager,payroll.provision.type manager,model_payroll_provision_type,account.group_account_manager,1,1,1,1
+access_provision_type_user,payroll.provision.type user,model_payroll_provision_type,account.group_account_user,1,0,0,0
+access_provision_settlement_manager,payroll.provision.settlement manager,model_payroll_provision_settlement,account.group_account_manager,1,1,1,1
+access_provision_settlement_user,payroll.provision.settlement user,model_payroll_provision_settlement,account.group_account_user,1,0,0,0
+access_provision_settlement_line_manager,settlement line manager,model_payroll_provision_settlement_line,account.group_account_manager,1,1,1,1
+access_provision_settlement_line_user,settlement line user,model_payroll_provision_settlement_line,account.group_account_user,1,0,0,0

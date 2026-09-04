@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_provision_settlement_list" model="ir.ui.view">
+        <field name="name">payroll.provision.settlement.list</field>
+        <field name="model">payroll.provision.settlement</field>
+        <field name="arch" type="xml">
+            <list string="Liquidaciones" decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="type_id"/>
+                <field name="date_cut"/>
+                <field name="date"/>
+                <field name="total_provisioned" sum="Provisionado"/>
+                <field name="total_to_pay" sum="A pagar"/>
+                <field name="total_difference" sum="Diferencia"/>
+                <field name="move_id"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'posted'"
+                       decoration-info="state == 'draft'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_provision_settlement_form" model="ir.ui.view">
+        <field name="name">payroll.provision.settlement.form</field>
+        <field name="model">payroll.provision.settlement</field>
+        <field name="arch" type="xml">
+            <form string="Liquidación de prestaciones">
+                <header>
+                    <button name="action_load_lines" type="object"
+                            string="Cargar empleados" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_post" type="object"
+                            string="Contabilizar" class="oe_highlight"
+                            invisible="state != 'draft' or not line_ids"
+                            confirm="Se generará el asiento de traslado y se conciliarán las provisiones de cada empleado. ¿Continuar?"/>
+                    <button name="action_cancel" type="object" string="Cancelar"
+                            invisible="state != 'draft'"/>
+                    <button name="action_draft" type="object" string="A borrador"
+                            invisible="state != 'cancel'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_move" type="object"
+                                class="oe_stat_button" icon="fa-book"
+                                invisible="not move_id">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Asiento</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not cutoff_warning">
+                        <field name="cutoff_warning" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="type_id"
+                                   readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="date_cut" readonly="state != 'draft'"/>
+                            <field name="date" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                            <field name="move_id" readonly="1" invisible="not move_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Empleados" name="empleados">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <list editable="bottom" create="false">
+                                    <field name="partner_id" readonly="1"/>
+                                    <field name="employee_id" readonly="1" optional="show"/>
+                                    <field name="amount_provisioned" sum="Provisionado"/>
+                                    <field name="amount_to_pay" sum="A pagar"/>
+                                    <field name="difference" sum="Diferencia"
+                                           decoration-warning="difference != 0"/>
+                                    <field name="reconcile_error" optional="hide"
+                                           readonly="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="total_provisioned"/>
+                                <field name="total_to_pay"/>
+                                <field name="total_difference"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_provision_settlement" model="ir.actions.act_window">
+        <field name="name">Liquidación de prestaciones</field>
+        <field name="res_model">payroll.provision.settlement</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Liquide una prestación</p>
+            <p>Elija la prestación y la fecha de corte, cargue los empleados y
+               revise los importes antes de contabilizar. El sistema propone lo
+               acumulado en la contabilidad; cualquier diferencia que usted
+               ajuste se manda a la cuenta de gasto.</p>
+        </field>
+    </record>
+
+</odoo>
