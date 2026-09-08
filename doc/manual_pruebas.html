@@ -337,9 +337,9 @@
   </section>
 
   <section>
-    <h2>Configuración que hay que cargar primero</h2>
-    <p>El menú <strong>Configuración de prestaciones</strong> está vacío: hay que crear las cuatro antes de poder probar nada. Se hacen con <strong>Nuevo</strong>, una por fila de la tabla. El diario es <span class="mono">CNOM</span> (Causación de Nómina) en las cuatro, y la compañía Intelli Next S.A.S.</p>
-    <p>Los códigos de cuenta están verificados uno a uno contra el plan contable de esa compañía: las doce existen y las ocho de balance admiten conciliación.</p>
+    <h2>Configuración ya cargada</h2>
+    <p>Las cuatro prestaciones están creadas en producción, con el diario <span class="mono">CNOM</span> (Causación de Nómina) y la compañía Intelli Next S.A.S. Los doce códigos de cuenta están verificados uno a uno contra su plan contable, y las ocho de balance admiten conciliación.</p>
+    <p><strong>Estas cuentas y estos meses de corte los validó contabilidad el 8 de septiembre de 2026</strong>, así que la tabla no es una propuesta: es lo acordado.</p>
 
     <div class="scroll">
       <table>
@@ -364,8 +364,15 @@
     </div>
 
     <div class="flag note">
-      <span class="tag">Solo Intelli Next S.A.S</span>
-      <p>Se pidió para todas las compañías, pero es la única cuyo plan contable tiene cuentas del grupo 26. Las prestaciones son una figura colombiana, así que Joobpay Inc., My Intelli SL, Intelli Next C.A, Intelli Next Corp. y My Intelli (MX) no aplican. Queda por confirmar si <strong>My Intelli S.A.S</strong> y <strong>Joobpay S.A.S</strong>, que sí son colombianas, deberían llevarlas: hoy no tienen esas cuentas.</p>
+      <span class="tag">Solo Intelli Next S.A.S — confirmado</span>
+      <p>Es la única compañía que lleva prestaciones en el sistema. Joobpay S.A.S está inactiva y sin movimientos, y My Intelli S.A.S no tiene empleados contratados; las demás son de otros países y las prestaciones son una figura colombiana.</p>
+    </div>
+
+    <div class="flag note">
+      <span class="tag">Tres decisiones que explican por qué el módulo hace lo que hace</span>
+      <p><strong>La causación va siempre a nombre del empleado.</strong> Aunque las cesantías se paguen en un solo desembolso al fondo, cada empleado tiene su propia línea en la cuenta por pagar. Por eso el asiento se reparte persona a persona en lugar de agrupar.</p>
+      <p><strong>Las vacaciones se cierran el 31 de diciembre como todo lo demás</strong>, hayan disfrutado los días o no: el saldo de la 26 pasa a la 25 como deuda con el trabajador. Cuando el empleado las toma al año siguiente, se cierra la porción acumulada de ese año y se cruza contra la deuda del cierre anterior, con el remanente a la cuenta de gasto.</p>
+      <p><strong>Cada diferencia va al gasto de su prestación</strong>, no a una cuenta única de ajuste. Se descartó expresamente la cuenta de ajuste común.</p>
     </div>
   </section>
 
@@ -405,19 +412,22 @@
     <div class="case">
       <div class="id">P1</div>
       <div class="body">
-        <h3>Crear las cuatro prestaciones</h3>
+        <h3>Comprobar las cuatro prestaciones</h3>
         <ol>
           <li>Entrar en <strong>Contabilidad → Contabilidad → Prestaciones sociales → Configuración de prestaciones</strong>.</li>
-          <li>Con <strong>Nuevo</strong>, crear las cuatro filas de la tabla anterior.</li>
-          <li>Volver a la lista y comprobar que las cuentas quedaron como dice la tabla.</li>
+          <li>Abrir cada una y contrastar sus cuentas y meses de corte con la tabla anterior.</li>
         </ol>
         <div class="expect">
           <span class="tag">Resultado esperado</span>
           <ul>
-            <li>Cuatro registros guardados sin errores.</li>
+            <li>Cuatro registros, con las cuentas y los cortes que dice la tabla.</li>
             <li>El desplegable de <strong>cuenta de provisión</strong> solo ofrece cuentas conciliables: es a propósito, la conciliación es lo que hace que el saldo cierre de verdad.</li>
             <li>Si se pone la misma cuenta en «provisión» y en «por pagar», se niega a guardar: el traslado no movería nada.</li>
           </ul>
+        </div>
+        <div class="flag warn">
+          <span class="tag">Merece una mirada</span>
+          <p>El mes de corte de <strong>Vacaciones</strong> apareció en 9 durante las pruebas y se corrigió a 12, que es lo validado. Si vuelve a aparecer cambiado, alguien lo está editando: conviene saber quién y por qué antes del cierre de diciembre.</p>
         </div>
       </div>
     </div>
@@ -540,7 +550,7 @@
         </div>
         <div class="flag warn">
           <span class="tag">Si alguno no concilió</span>
-          <p>La liquidación tiene una columna oculta <strong>Error de conciliación</strong> en la lista de empleados: actívela con el icono de columnas, arriba a la derecha de la tabla. Un empleado que no concilie no tumba a los demás — el asiento ya está bien y el cruce se rehace a mano.</p>
+          <p>Sale una franja avisando de cuántos empleados no se cruzaron y de quiénes son, y la columna <strong>Error de conciliación</strong> de la lista dice el motivo de cada uno. Un empleado que falle no tumba a los demás: el asiento ya está bien, el resto sí se cruzó, y el cruce pendiente se rehace a mano desde los apuntes contables.</p>
         </div>
       </div>
     </div>
@@ -646,7 +656,7 @@
   </section>
 
   <footer>
-    <p>Módulo <span class="mono">payroll_provisions</span> 18.0.1.1.0 en producción (<span class="mono">odoo.myintelli.net</span>). El repositorio va una versión por delante, 18.0.1.1.1, con una corrección que no cambia el comportamiento. Guion escrito el 4 de septiembre de 2026 — Hidelberg Martinez, Intelli Next.</p>
+    <p>Módulo <span class="mono">payroll_provisions</span> 18.0.1.2.0, rama <span class="mono">main</span>, en producción (<span class="mono">odoo.myintelli.net</span>). Requisitos validados con contabilidad el 8 de septiembre de 2026 — Hidelberg Martinez, Intelli Next.</p>
   </footer>
 
 </div>
