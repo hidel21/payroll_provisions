@@ -1,0 +1,315 @@
+<title>Cesantías en treinta minutos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+<style>
+  :root {
+    --paper:      #f6f8f7;
+    --surface:    #ffffff;
+    --surface-2:  #eef2f0;
+    --ink:        #16211d;
+    --ink-soft:   #3d4b46;
+    --muted:      #67766f;
+    --rule:       #dbe3df;
+    --rule-firm:  #c2cdc8;
+    --accent:     #0f6b52;
+    --accent-ink: #0a4c3a;
+    --warn:       #8a5a06;
+    --warn-wash:  #f7ecd6;
+    --danger:     #9c2b2b;
+    --danger-wash:#f6dedc;
+
+    --f-display: "Bitter", Georgia, "Times New Roman", serif;
+    --f-body:    "Source Sans 3", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1614; --surface: #16201d; --surface-2: #1d2925;
+      --ink: #e4ebe7; --ink-soft: #c0ccc6; --muted: #8b9a93;
+      --rule: #2b3733; --rule-firm: #3c4a45;
+      --accent: #57c39d; --accent-ink: #8fdcbe;
+      --warn: #e0ac57; --warn-wash: #33280f;
+      --danger: #e08a85; --danger-wash: #361a19;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1614; --surface: #16201d; --surface-2: #1d2925;
+    --ink: #e4ebe7; --ink-soft: #c0ccc6; --muted: #8b9a93;
+    --rule: #2b3733; --rule-firm: #3c4a45;
+    --accent: #57c39d; --accent-ink: #8fdcbe;
+    --warn: #e0ac57; --warn-wash: #33280f;
+    --danger: #e08a85; --danger-wash: #361a19;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: var(--f-body); font-size: 16.5px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 54rem; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+
+  .head { border-bottom: 2px solid var(--ink); padding-bottom: 1.4rem; }
+  .eyebrow {
+    font-family: var(--f-mono); font-size: .71rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 .8rem;
+  }
+  h1 {
+    font-family: var(--f-display); font-weight: 700;
+    font-size: clamp(1.9rem, 4.6vw, 2.6rem); line-height: 1.08;
+    letter-spacing: -.015em; text-wrap: balance; margin: 0 0 .8rem;
+  }
+  .standfirst { font-size: 1.06rem; color: var(--ink-soft); max-width: 40rem; margin: 0; }
+
+  section { margin-top: 3rem; }
+  h2 {
+    font-family: var(--f-display); font-weight: 600; font-size: 1.42rem;
+    margin: 0 0 .9rem; padding-bottom: .45rem;
+    border-bottom: 1px solid var(--rule-firm);
+  }
+  p { max-width: 40rem; margin: 0 0 .9rem; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+  code, .mono {
+    font-family: var(--f-mono); font-size: .86em;
+    background: var(--surface-2); padding: .1em .35em; border-radius: 2px;
+  }
+
+  /* pasos numerados: el orden es real, no decorativo */
+  .steps { list-style: none; padding: 0; margin: 0; counter-reset: paso; }
+  .steps > li {
+    display: grid; grid-template-columns: 2.4rem 1fr; gap: 0 1rem;
+    padding: 1.05rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .steps > li:last-child { border-bottom: none; }
+  .steps > li::before {
+    counter-increment: paso; content: counter(paso);
+    font-family: var(--f-mono); font-size: 1.15rem; font-weight: 500;
+    color: var(--accent); line-height: 1.35;
+  }
+  .steps h3 {
+    font-family: var(--f-display); font-weight: 600; font-size: 1.05rem;
+    margin: 0 0 .25rem;
+  }
+  .steps p { margin: 0; max-width: 36rem; color: var(--ink-soft); }
+  .steps .where {
+    display: block; font-family: var(--f-mono); font-size: .76rem;
+    color: var(--muted); margin-top: .35rem;
+  }
+
+  .flag {
+    padding: .8rem 1rem; margin: 1rem 0; max-width: 40rem;
+    font-size: .95rem; border-left: 3px solid;
+  }
+  .flag p:last-child { margin-bottom: 0; }
+  .flag .tag {
+    display: block; font-family: var(--f-mono); font-size: .67rem;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: .3rem;
+  }
+  .flag.warn { background: var(--warn-wash); border-color: var(--warn); }
+  .flag.warn .tag { color: var(--warn); }
+  .flag.danger { background: var(--danger-wash); border-color: var(--danger); }
+  .flag.danger .tag { color: var(--danger); }
+  .flag.note { background: var(--surface-2); border-color: var(--rule-firm); }
+  .flag.note .tag { color: var(--muted); }
+
+  /* preguntas */
+  .q { border-bottom: 1px solid var(--rule); padding: 1.15rem 0; }
+  .q:last-of-type { border-bottom: none; }
+  .q .num {
+    font-family: var(--f-mono); font-size: .72rem; letter-spacing: .08em;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .q h3 {
+    font-family: var(--f-display); font-weight: 600; font-size: 1.06rem;
+    margin: .25rem 0 .35rem; max-width: 40rem;
+  }
+  .q p { font-size: .95rem; color: var(--ink-soft); margin-bottom: .55rem; }
+  .q .answer {
+    border: 1px dashed var(--rule-firm); background: var(--surface);
+    min-height: 2.6rem; max-width: 40rem;
+    padding: .45rem .7rem;
+    font-family: var(--f-mono); font-size: .72rem; color: var(--muted);
+  }
+  .q.blocks h3::after {
+    content: "bloquea desarrollo";
+    display: inline-block; vertical-align: middle;
+    margin-left: .55rem; padding: .12rem .45rem;
+    font-family: var(--f-mono); font-size: .6rem; letter-spacing: .07em;
+    text-transform: uppercase; font-weight: 500;
+    color: var(--danger); background: var(--danger-wash);
+    border: 1px solid var(--danger);
+  }
+
+  .scroll { overflow-x: auto; margin: 1.1rem 0 1.3rem; }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: .92rem; }
+  th, td { text-align: left; padding: .5rem .8rem .5rem 0; border-bottom: 1px solid var(--rule); }
+  thead th {
+    font-size: .72rem; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted);
+    border-bottom: 1.5px solid var(--rule-firm); white-space: nowrap;
+  }
+  td.acc { font-family: var(--f-mono); font-size: .85rem; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  footer {
+    margin-top: 3.5rem; padding-top: 1.1rem;
+    border-top: 1px solid var(--rule-firm);
+    font-size: .86rem; color: var(--muted); max-width: 40rem;
+  }
+  @media (max-width: 30rem) {
+    .steps > li { grid-template-columns: 1.8rem 1fr; gap: 0 .7rem; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">Sesión con Yeny · 8 de septiembre de 2026 · 30 minutos</p>
+    <h1>Cesantías en treinta minutos</h1>
+    <p class="standfirst">El flujo entero en cinco pasos, lo que puede salir mal, y las siete preguntas que hay que responder para poder pasar a producción. Las marcadas en rojo bloquean el desarrollo: sin ellas no se puede seguir.</p>
+  </header>
+
+  <section>
+    <h2>Qué automatiza</h2>
+    <p>Lo que se provisiona mes a mes en la cuenta <span class="mono">26</span> tiene que pasar, al llegar el corte, a la cuenta <span class="mono">25</span>, donde queda como deuda a la espera del pago. Hoy eso se hace a mano, empleado por empleado, y <strong>el cruce contra las provisiones que lo originaron no se hace</strong>: el saldo queda en cero por suma, pero cada apunte sigue abierto, y en dos cortes nadie sabe qué queda pendiente de quién.</p>
+    <p>El módulo hace las tres cosas de una vez: propone el acumulado, genera el asiento y concilia. <strong>No paga</strong> — deja el importe en la cuenta por pagar.</p>
+  </section>
+
+  <section>
+    <h2>El flujo</h2>
+    <ol class="steps">
+      <li>
+        <div>
+          <h3>Configurar las cuatro prestaciones</h3>
+          <p>Una sola vez. Cada prestación necesita saber de qué cuenta sale, a cuál va y adónde mandar la diferencia.</p>
+          <span class="where">Contabilidad → Prestaciones sociales → Configuración de prestaciones</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Abrir una liquidación</h3>
+          <p>Elegir la prestación y la fecha de corte. Se toma el acumulado de cada empleado hasta esa fecha, incluida.</p>
+          <span class="where">Prestaciones sociales → Liquidaciones → Nuevo</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Cargar empleados</h3>
+          <p>Aparece cada empleado con lo que tiene acumulado. Solo entran apuntes <em>sin conciliar</em>: lo ya liquidado en un corte anterior no vuelve a salir.</p>
+          <span class="where">Botón «Cargar empleados»</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Revisar y ajustar</h3>
+          <p>«Provisionado» viene de la contabilidad y no se toca. Si lo que se va a pagar es distinto, se corrige «A pagar» y la diferencia se calcula sola.</p>
+          <span class="where">Pestaña Empleados</span>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h3>Contabilizar</h3>
+          <p>Genera el asiento de traslado y concilia la provisión de cada empleado. A partir de aquí no hay vuelta atrás simple: para deshacerlo hay que revertir el asiento.</p>
+          <span class="where">Botón «Contabilizar»</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Lo que puede salir mal</h2>
+
+    <div class="flag warn">
+      <span class="tag">Franja amarilla — corte fuera de calendario</span>
+      <p>Sale cuando se liquida en un mes que no es de corte: cesantías en septiembre, por ejemplo. <strong>Avisa y deja seguir</strong>, porque un retiro a mitad de año hay que poder liquidarlo igual.</p>
+    </div>
+
+    <div class="flag danger">
+      <span class="tag">Franja roja — la nómina ya hace el traslado</span>
+      <p>La prima tiene sus propias reglas salariales que ya sacan el saldo de la cuenta 26. Si además se liquida por aquí, <strong>sale dos veces</strong>. El aviso mira dos cosas: apuntes contables que ya debitan la cuenta, y recibos de nómina que lo hagan <em>aunque sigan en borrador</em>. Tampoco bloquea, pero si aparece y no sabe explicar por qué, no contabilice.</p>
+    </div>
+
+    <div class="flag note">
+      <span class="tag">Un empleado no concilió</span>
+      <p>El asiento igual queda bien y los demás empleados se concilian: uno que falle no tumba al resto. En la lista de empleados hay una columna oculta <strong>Error de conciliación</strong> que dice qué pasó.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Las preguntas</h2>
+    <p>Siete. Las tres primeras bloquean; las otras se pueden asumir y corregir después.</p>
+
+    <div class="q blocks">
+      <span class="num">Pregunta 1 · destino del pago</span>
+      <h3>Las cesantías se pagan al fondo, no al trabajador. ¿La cuenta por pagar sigue siendo por empleado?</h3>
+      <p>Hoy el asiento deja la deuda <em>nominada por cada empleado</em> en la 25101001. Si luego se paga un solo importe global al fondo, ese pago no va a cruzar contra líneas individuales. Y al trabajador solo se le pagan los intereses, que van por otra cuenta. Hay que saber si el traslado debe agrupar por fondo o mantenerse por persona.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q blocks">
+      <span class="num">Pregunta 2 · vacaciones</span>
+      <h3>¿Las vacaciones se trasladan igual que las cesantías, o solo cuando alguien las disfruta o se retira?</h3>
+      <p>Las cesantías tienen un corte anual claro. Las vacaciones se van acumulando y se consumen cuando se toman. Si se trasladan enteras cada 31 de diciembre, la cuenta por pagar se llena de saldo de gente que no ha pedido vacaciones. Puede que aquí el corte no aplique igual.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q blocks">
+      <span class="num">Pregunta 3 · préstamos</span>
+      <h3>Para la DIAN, ¿el préstamo a trabajadores va como <span class="mono">Libranzas</span> o como <span class="mono">Deuda</span>?</h3>
+      <p>No es cesantías, pero es un dato de treinta segundos que bloquea el otro desarrollo. El bloque de Deducciones de la DIAN los distingue: <span class="mono">Libranzas</span> es el descuento autorizado —normalmente con un tercero prestamista— y exige descripción y número; <span class="mono">Deuda</span> encaja mejor en un préstamo directo de la empresa. El adelanto de salario va aparte, en <span class="mono">Anticipos</span>, y eso confirma que son dos figuras distintas como usted decía.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q">
+      <span class="num">Pregunta 4 · diferencias</span>
+      <h3>¿La diferencia va a la cuenta de gasto de cada prestación, o a una sola cuenta de ajustes?</h3>
+      <p>Está configurado por prestación —cesantías a la 51053001, prima a la 51053601, y así—, que parece lo más fiel. Si prefiere verlas todas juntas en una cuenta de ajuste, se cambia en un minuto.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q">
+      <span class="num">Pregunta 5 · calendario</span>
+      <h3>¿Son correctos los meses de corte?</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Prestación</th><th>Configurado</th></tr></thead>
+          <tbody>
+            <tr><td>Cesantías</td><td class="acc">12</td></tr>
+            <tr><td>Intereses sobre cesantías</td><td class="acc">12</td></tr>
+            <tr><td>Prima de servicios</td><td class="acc">6, 12</td></tr>
+            <tr><td>Vacaciones</td><td class="acc">12</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q">
+      <span class="num">Pregunta 6 · retiros</span>
+      <h3>Cuando alguien se retira a mitad de año, ¿se liquida por aquí o por otra vía?</h3>
+      <p>El sistema lo permite: avisa de que el mes no es de corte, pero deja hacerlo. Solo hace falta saber si es el camino que quiere usar, o si el retiro tiene su propio proceso.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+
+    <div class="q">
+      <span class="num">Pregunta 7 · alcance</span>
+      <h3>¿My Intelli S.A.S y Joobpay S.A.S deberían llevar prestaciones?</h3>
+      <p>Son colombianas, pero hoy su plan contable no tiene cuentas del grupo 26 y no aparece ninguna nómina significativa en ellas. Las demás compañías —Joobpay Inc., My Intelli SL, Intelli Next C.A, Intelli Next Corp. y My Intelli (MX)— no aplican por ser de otros países.</p>
+      <div class="answer">respuesta:</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Para cerrar la sesión</h2>
+    <p>Con las tres primeras respondidas, el módulo puede pasar a producción con el resto asumido y ajustable. Sin ellas, cualquier cosa que se contabilice puede haber que revertirla.</p>
+    <p>Lo que hay ya en producción: el módulo instalado y las cuatro prestaciones pendientes de crear, con sus cuentas verificadas una a una contra el plan contable de Intelli Next S.A.S. Nadie ha contabilizado nada todavía.</p>
+  </section>
+
+  <footer>
+    <p>Módulo <span class="mono">payroll_provisions</span> · Hidelberg Martinez, Intelli Next. El guion completo de pruebas, con los diez casos, va aparte.</p>
+  </footer>
+
+</div>

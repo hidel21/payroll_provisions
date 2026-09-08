@@ -70,6 +70,7 @@ class PayrollProvisionSettlement(models.Model):
     )
     cutoff_warning = fields.Char(compute="_compute_cutoff_warning")
     transfer_warning = fields.Char(compute="_compute_transfer_warning")
+    reconcile_warning = fields.Char(compute="_compute_reconcile_warning")
 
     total_provisioned = fields.Monetary(
         compute="_compute_totals", store=True, string="Total provisionado"
@@ -99,6 +100,35 @@ class PayrollProvisionSettlement(models.Model):
             liq.total_provisioned = sum(liq.line_ids.mapped("amount_provisioned"))
             liq.total_to_pay = sum(liq.line_ids.mapped("amount_to_pay"))
             liq.total_difference = liq.total_provisioned - liq.total_to_pay
+
+    @api.depends("line_ids.reconcile_error", "state")
+    def _compute_reconcile_warning(self):
+        """Dice cuántos empleados quedaron sin cruzar, y a quién mirar.
+
+        El asiento se contabiliza igual: que un empleado no concilie no debe
+        tumbar a los demás. Pero entonces el aviso tiene que ser visible, porque
+        el problema no da la cara en ninguna otra parte —el saldo cuadra por
+        suma— y se descubriría dos cortes más tarde, que es justo lo que este
+        módulo venía a evitar.
+        """
+        for liq in self:
+            fallidas = liq.line_ids.filtered("reconcile_error")
+            if not fallidas:
+                liq.reconcile_warning = False
+                continue
+            nombres = fallidas[:3].mapped("partner_id.display_name")
+            if len(fallidas) > 3:
+                nombres.append(_("y %s más", len(fallidas) - 3))
+            liq.reconcile_warning = _(
+                "%(n)s de %(total)s empleados no se pudieron cruzar contra sus "
+                "provisiones: %(quienes)s. El asiento está bien y el resto sí "
+                "se cruzó; el motivo de cada uno está en la columna «Error de "
+                "conciliación», y el cruce se puede rehacer a mano desde los "
+                "apuntes contables.",
+                n=len(fallidas),
+                total=len(liq.line_ids),
+                quienes=", ".join(nombres),
+            )
 
     @api.depends("type_id", "date_cut")
     def _compute_cutoff_warning(self):

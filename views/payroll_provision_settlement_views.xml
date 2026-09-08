@@ -67,6 +67,11 @@
                         <field name="transfer_warning" readonly="1" nolabel="1"/>
                     </div>
 
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not reconcile_warning">
+                        <field name="reconcile_warning" readonly="1" nolabel="1"/>
+                    </div>
+
                     <group>
                         <group>
                             <field name="type_id"
@@ -93,8 +98,9 @@
                                     <field name="amount_to_pay" sum="A pagar"/>
                                     <field name="difference" sum="Diferencia"
                                            decoration-warning="difference != 0"/>
-                                    <field name="reconcile_error" optional="hide"
-                                           readonly="1"/>
+                                    <field name="reconcile_error" optional="show"
+                                           readonly="1" string="Error de conciliación"
+                                           decoration-danger="reconcile_error != False"/>
                                     <field name="currency_id" column_invisible="1"/>
                                 </list>
                             </field>

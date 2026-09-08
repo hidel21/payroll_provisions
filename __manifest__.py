@@ -35,7 +35,7 @@ Este módulo genera su propio asiento y no reabre nada.
     "author": "Hidelberg Martinez",
     "website": "https://intelli-next.com",
     "category": "Human Resources/Payroll",
-    "version": "18.0.1.1.1",
+    "version": "18.0.1.2.0",
     "license": "LGPL-3",
     "depends": ["account", "hr"],
     "data": [

@@ -1,0 +1,652 @@
+<title>Pruebas de prestaciones sociales</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+<style>
+  :root {
+    --paper:      #f6f8f7;
+    --surface:    #ffffff;
+    --surface-2:  #eef2f0;
+    --ink:        #16211d;
+    --ink-soft:   #3d4b46;
+    --muted:      #67766f;
+    --rule:       #dbe3df;
+    --rule-firm:  #c2cdc8;
+    --accent:     #0f6b52;
+    --accent-ink: #0a4c3a;
+    --accent-wash:#dceae4;
+    --warn:       #8a5a06;
+    --warn-wash:  #f7ecd6;
+    --danger:     #9c2b2b;
+    --danger-wash:#f6dedc;
+
+    --f-display: "Bitter", Georgia, "Times New Roman", serif;
+    --f-body:    "Source Sans 3", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --f-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --gutter: 4.25rem;
+    --measure: 40rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0f1614;
+      --surface:    #16201d;
+      --surface-2:  #1d2925;
+      --ink:        #e4ebe7;
+      --ink-soft:   #c0ccc6;
+      --muted:      #8b9a93;
+      --rule:       #2b3733;
+      --rule-firm:  #3c4a45;
+      --accent:     #57c39d;
+      --accent-ink: #8fdcbe;
+      --accent-wash:#17322a;
+      --warn:       #e0ac57;
+      --warn-wash:  #33280f;
+      --danger:     #e08a85;
+      --danger-wash:#361a19;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #0f1614;
+    --surface:    #16201d;
+    --surface-2:  #1d2925;
+    --ink:        #e4ebe7;
+    --ink-soft:   #c0ccc6;
+    --muted:      #8b9a93;
+    --rule:       #2b3733;
+    --rule-firm:  #3c4a45;
+    --accent:     #57c39d;
+    --accent-ink: #8fdcbe;
+    --accent-wash:#17322a;
+    --warn:       #e0ac57;
+    --warn-wash:  #33280f;
+    --danger:     #e08a85;
+    --danger-wash:#361a19;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 58rem;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+  }
+
+  /* ── cabecera ─────────────────────────────────────────── */
+  .head { border-bottom: 2px solid var(--ink); padding-bottom: 1.75rem; }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 .9rem;
+  }
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 0 0 .9rem;
+  }
+  .standfirst {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 0;
+  }
+  .standfirst em { font-style: italic; }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 1.75rem 0 0;
+  }
+  .facts div { background: var(--surface); padding: .8rem .95rem; }
+  .facts dt {
+    font-family: var(--f-mono);
+    font-size: .68rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 .3rem;
+  }
+  .facts dd {
+    margin: 0;
+    font-weight: 600;
+    font-size: .95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── secciones ────────────────────────────────────────── */
+  section { margin-top: 3.5rem; }
+  h2 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: -.01em;
+    margin: 0 0 .35rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--rule-firm);
+  }
+  h3 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: 1.08rem;
+    margin: 2rem 0 .5rem;
+  }
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  .lede { color: var(--ink-soft); margin-top: 1.1rem; }
+  ul, ol { max-width: var(--measure); padding-left: 1.2rem; margin: 0 0 1rem; }
+  li { margin-bottom: .4rem; }
+  strong { font-weight: 700; }
+  code, .mono {
+    font-family: var(--f-mono);
+    font-size: .87em;
+    background: var(--surface-2);
+    padding: .1em .35em;
+    border-radius: 2px;
+  }
+
+  /* ── tablas ───────────────────────────────────────────── */
+  .scroll { overflow-x: auto; margin: 1.25rem 0 1.5rem; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 34rem;
+    font-size: .93rem;
+  }
+  caption {
+    text-align: left;
+    font-family: var(--f-mono);
+    font-size: .7rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: .6rem;
+  }
+  th, td {
+    text-align: left;
+    padding: .55rem .8rem .55rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  thead th {
+    font-family: var(--f-body);
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1.5px solid var(--rule-firm);
+    white-space: nowrap;
+  }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 0; }
+  td.acc { font-family: var(--f-mono); font-size: .85rem; white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ── casos de prueba ──────────────────────────────────── */
+  .case {
+    display: grid;
+    grid-template-columns: var(--gutter) 1fr;
+    gap: 0 1.25rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .case:last-of-type { border-bottom: none; }
+  .case > .id {
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: .82rem;
+    letter-spacing: .04em;
+    color: var(--accent);
+    padding-top: .28rem;
+  }
+  .case > .body > :first-child { margin-top: 0; }
+  .case h3 { margin-top: 0; font-size: 1.12rem; }
+  .case ol, .case ul, .case p { max-width: 38rem; }
+
+  .expect {
+    background: var(--surface);
+    border: 1px solid var(--rule-firm);
+    border-left: 3px solid var(--accent);
+    padding: .85rem 1rem;
+    margin: 1rem 0 0;
+    max-width: 38rem;
+  }
+  .expect .tag {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: .67rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin-bottom: .35rem;
+  }
+  .expect p, .expect ul { margin-bottom: 0; }
+  .expect ul { padding-left: 1.1rem; }
+
+  .flag {
+    padding: .8rem 1rem;
+    margin: 1rem 0;
+    max-width: 38rem;
+    font-size: .95rem;
+    border-left: 3px solid;
+  }
+  .flag p:last-child { margin-bottom: 0; }
+  .flag .tag {
+    display: block;
+    font-family: var(--f-mono);
+    font-size: .67rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: .3rem;
+  }
+  .flag.warn   { background: var(--warn-wash);   border-color: var(--warn);   }
+  .flag.warn .tag   { color: var(--warn); }
+  .flag.danger { background: var(--danger-wash); border-color: var(--danger); }
+  .flag.danger .tag { color: var(--danger); }
+  .flag.note   { background: var(--surface-2);   border-color: var(--rule-firm); }
+  .flag.note .tag   { color: var(--muted); }
+
+  .check { list-style: none; padding-left: 0; }
+  .check li {
+    display: grid;
+    grid-template-columns: 1.15rem 1fr;
+    gap: .6rem;
+    align-items: start;
+  }
+  .check li::before {
+    content: "";
+    display: block;
+    width: .95rem; height: .95rem;
+    margin-top: .32rem;
+    border: 1.5px solid var(--rule-firm);
+    background: var(--surface);
+  }
+
+  pre {
+    font-family: var(--f-mono);
+    font-size: .82rem;
+    line-height: 1.55;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    padding: .9rem 1rem;
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule-firm);
+    font-size: .87rem;
+    color: var(--muted);
+    max-width: var(--measure);
+  }
+
+  @media (max-width: 34rem) {
+    .case { grid-template-columns: 1fr; gap: .5rem; }
+    .case > .id { padding-top: 0; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="head">
+    <p class="eyebrow">payroll_provisions · 18.0.1.1.0 · producción</p>
+    <h1>Pruebas de prestaciones sociales</h1>
+    <p class="standfirst">Guion para validar el traslado automático de prestaciones de la cuenta de provisión a la de por pagar, con su cruce contable. Diez casos, en orden: <em>los últimos dependen de haber hecho los primeros.</em></p>
+
+    <dl class="facts">
+      <div><dt>Dirección</dt><dd>odoo.myintelli.net</dd></div>
+      <div><dt>Base de datos</dt><dd>MyIntelli</dd></div>
+      <div><dt>Compañía</dt><dd>Intelli Next S.A.S</dd></div>
+      <div><dt>Permiso necesario</dt><dd>Contabilidad · Asesor</dd></div>
+    </dl>
+
+    <div class="flag danger" style="max-width:none">
+      <span class="tag">Esto es la contabilidad real</span>
+      <p>Se decidió probar directamente en producción, no en un entorno aparte. No hay red debajo: <strong>Contabilizar</strong> genera un asiento de verdad y concilia apuntes de verdad, y deshacerlo obliga a revertir el asiento a mano, porque la liquidación no vuelve a borrador. Haga los casos <strong>en orden</strong> y no pulse Contabilizar antes del P7, que es donde se explica qué va a ocurrir.</p>
+    </div>
+  </header>
+
+  <section>
+    <h2>Qué hace el módulo</h2>
+    <p class="lede">Al llegar el corte, lo que se ha ido provisionando mes a mes en la cuenta <span class="mono">26</span> tiene que pasar a la cuenta <span class="mono">25</span>, que es donde queda como deuda con el trabajador a la espera del pago. Hasta ahora ese paso se hacía a mano, empleado por empleado, y el cruce contra las provisiones que lo originaron no se hacía en absoluto: el saldo quedaba en cero por suma, pero cada apunte seguía abierto.</p>
+    <p>El módulo hace las tres cosas de una vez: propone el acumulado de cada empleado, genera el asiento de traslado y concilia. Si lo que se paga no coincide con lo provisionado —un cambio de salario a mitad de periodo, por ejemplo— la diferencia se manda sola a la cuenta de gasto de esa prestación.</p>
+    <p><strong>Lo que no hace:</strong> no paga. Deja el importe en la cuenta por pagar; el pago se registra después por su vía habitual, sea banco, Binance o el fondo de cesantías.</p>
+  </section>
+
+  <section>
+    <h2>Configuración que hay que cargar primero</h2>
+    <p>El menú <strong>Configuración de prestaciones</strong> está vacío: hay que crear las cuatro antes de poder probar nada. Se hacen con <strong>Nuevo</strong>, una por fila de la tabla. El diario es <span class="mono">CNOM</span> (Causación de Nómina) en las cuatro, y la compañía Intelli Next S.A.S.</p>
+    <p>Los códigos de cuenta están verificados uno a uno contra el plan contable de esa compañía: las doce existen y las ocho de balance admiten conciliación.</p>
+
+    <div class="scroll">
+      <table>
+        <caption>Contabilidad → Contabilidad → Prestaciones sociales → Configuración de prestaciones</caption>
+        <thead>
+          <tr>
+            <th>Prestación</th>
+            <th>Código</th>
+            <th class="num">Provisión</th>
+            <th class="num">Por pagar</th>
+            <th class="num">Gasto (diferencias)</th>
+            <th class="num">Meses de corte</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Cesantías</td><td class="acc">CES</td><td class="acc num">26100501</td><td class="acc num">25101001</td><td class="acc num">51053001</td><td class="num">12</td></tr>
+          <tr><td>Intereses sobre cesantías</td><td class="acc">ICES</td><td class="acc num">26101001</td><td class="acc num">25150101</td><td class="acc num">51053301</td><td class="num">12</td></tr>
+          <tr><td>Prima de servicios</td><td class="acc">PRIMA</td><td class="acc num">26102001</td><td class="acc num">252005</td><td class="acc num">51053601</td><td class="num">6,12</td></tr>
+          <tr><td>Vacaciones</td><td class="acc">VAC</td><td class="acc num">26101501</td><td class="acc num">25250101</td><td class="acc num">51053901</td><td class="num">12</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flag note">
+      <span class="tag">Solo Intelli Next S.A.S</span>
+      <p>Se pidió para todas las compañías, pero es la única cuyo plan contable tiene cuentas del grupo 26. Las prestaciones son una figura colombiana, así que Joobpay Inc., My Intelli SL, Intelli Next C.A, Intelli Next Corp. y My Intelli (MX) no aplican. Queda por confirmar si <strong>My Intelli S.A.S</strong> y <strong>Joobpay S.A.S</strong>, que sí son colombianas, deberían llevarlas: hoy no tienen esas cuentas.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cifras de partida</h2>
+    <p>Antes de tocar nada, deje constancia de dónde se parte. Cree una liquidación de cada prestación con corte a hoy, pulse <strong>Cargar empleados</strong> y <strong>anote lo que salga</strong> sin contabilizar. Esa es la referencia contra la que se comparará todo después.</p>
+
+    <div class="scroll">
+      <table>
+        <caption>Rellénese antes de empezar — corte ____ / ____ / 2026</caption>
+        <thead>
+          <tr>
+            <th>Prestación</th>
+            <th class="num">Empleados</th>
+            <th class="num">Provisionado (COP)</th>
+            <th class="num">¿Sale aviso rojo?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Cesantías</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>Intereses sobre cesantías</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>Prima de servicios</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+          <tr><td>Vacaciones</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Una liquidación cargada y sin contabilizar no mueve nada: se puede borrar sin dejar rastro contable. Solo consume un número de la secuencia, que no se recupera — es normal en Odoo y no indica nada roto.</p>
+
+    <p><strong>Es previsible que cesantías salga con menos empleados que las demás.</strong> Su histórico arrastra pagos antiguos contabilizados sin conciliar contra las provisiones que los originaron: el desorden manual de hace más de dos años del que ya se habló. No hay que arreglarlo retroactivamente, pero explica el número si llama la atención.</p>
+  </section>
+
+  <section>
+    <h2>Los casos</h2>
+    <p class="lede">Del P1 al P10. Del P2 al P6 no se toca la contabilidad: se carga, se mira y se descarta. <strong>El P7 es la frontera</strong> —ahí se contabiliza de verdad—, así que léase antes el apartado <em>Cómo deshacer</em>.</p>
+
+    <div class="case">
+      <div class="id">P1</div>
+      <div class="body">
+        <h3>Crear las cuatro prestaciones</h3>
+        <ol>
+          <li>Entrar en <strong>Contabilidad → Contabilidad → Prestaciones sociales → Configuración de prestaciones</strong>.</li>
+          <li>Con <strong>Nuevo</strong>, crear las cuatro filas de la tabla anterior.</li>
+          <li>Volver a la lista y comprobar que las cuentas quedaron como dice la tabla.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <ul>
+            <li>Cuatro registros guardados sin errores.</li>
+            <li>El desplegable de <strong>cuenta de provisión</strong> solo ofrece cuentas conciliables: es a propósito, la conciliación es lo que hace que el saldo cierre de verdad.</li>
+            <li>Si se pone la misma cuenta en «provisión» y en «por pagar», se niega a guardar: el traslado no movería nada.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P2</div>
+      <div class="body">
+        <h3>Quien no lleva contabilidad no ve nada</h3>
+        <ol>
+          <li>Entrar con un usuario que no tenga el permiso <strong>Contabilidad · Asesor</strong>.</li>
+          <li>Buscar el menú Prestaciones sociales.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>El menú no aparece. Un usuario con permiso de solo lectura sí lo ve, pero no puede crear ni contabilizar.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P3</div>
+      <div class="body">
+        <h3>Cargar empleados en una liquidación nueva</h3>
+        <ol>
+          <li><strong>Liquidaciones → Nuevo</strong>.</li>
+          <li>Prestación: <strong>Prima de servicios</strong>. Fecha de corte: <strong>31/12/2026</strong>. Fecha del asiento: la misma.</li>
+          <li>Pulsar <strong>Cargar empleados</strong>.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <ul>
+            <li>Aparece la lista de empleados con su importe acumulado, y coincide con lo que anotó en «Cifras de partida».</li>
+            <li>«Provisionado» y «A pagar» vienen iguales, y la diferencia en cero.</li>
+            <li>En el chatter queda anotado cuántos empleados se cargaron y con qué corte.</li>
+            <li>Diciembre es mes de corte de la prima, así que <strong>no</strong> sale el aviso amarillo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P4</div>
+      <div class="body">
+        <h3>Liquidar fuera del calendario avisa, pero deja seguir</h3>
+        <ol>
+          <li>En una liquidación nueva, elegir <strong>Cesantías</strong> con fecha de corte en <strong>septiembre</strong>.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>Sale una franja amarilla diciendo que las cesantías se liquidan normalmente en el mes 12 y que este corte cae en el 9. <strong>No bloquea:</strong> un retiro a mitad de año hay que poder liquidarlo igual.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P5</div>
+      <div class="body">
+        <h3>El aviso rojo de doble traslado</h3>
+        <p>Este es el caso que más importa. La prima ya se traslada sola desde el recibo de nómina, con sus propias reglas salariales. Liquidarla además por aquí la sacaría dos veces.</p>
+        <ol>
+          <li>Liquidación nueva con <strong>Prima de servicios</strong> y fecha de corte <strong>30/06/2026</strong>.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>Franja roja avisando de que en 06/2026 hay recibos que ya llevan el traslado por la regla <span class="mono">PROVPRIMAAC</span>, indicando cuántos siguen en borrador. Tampoco bloquea, porque un débito suelto puede ser un ajuste legítimo.</p>
+        </div>
+        <div class="flag danger">
+          <span class="tag">No siga si ve esto</span>
+          <p>Si el aviso rojo aparece y usted no sabe explicar por qué, <strong>no contabilice</strong>. Compruebe antes en la contabilidad de dónde sale ese débito.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P6</div>
+      <div class="body">
+        <h3>Una diferencia se va sola a la cuenta de gasto</h3>
+        <ol>
+          <li>Volver a la liquidación del P3 (Prima, corte 31/12/2026).</li>
+          <li>A un solo empleado, bajarle <strong>A pagar</strong> en 50.000 respecto de lo provisionado.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>La columna «Diferencia» de esa fila marca 50.000 en ámbar, y el total de diferencia al pie recoge el mismo importe. Todavía no se ha contabilizado nada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P7</div>
+      <div class="body">
+        <h3>Contabilizar y leer el asiento</h3>
+        <ol>
+          <li>Pulsar <strong>Contabilizar</strong> y confirmar el aviso.</li>
+          <li>Abrir el asiento con el botón <strong>Asiento</strong> de la esquina superior.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <ul>
+            <li>La liquidación pasa a <strong>Contabilizado</strong> y queda enlazada a un asiento del diario CNOM.</li>
+            <li>El asiento cuadra en cero, y <em>cada empleado cuadra por separado</em>.</li>
+            <li>El empleado del P6 tiene tres líneas; el resto, dos.</li>
+            <li>El chatter resume: cuántos empleados, cuánto se trasladó y cuánto fue a gasto.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P8</div>
+      <div class="body">
+        <h3>La conciliación, que es el punto de todo esto</h3>
+        <ol>
+          <li>Ir a <strong>Contabilidad → Contabilidad → Apuntes contables</strong>, filtrar por la cuenta <span class="mono">26102001</span> y por un empleado de la liquidación.</li>
+          <li>Mirar la columna <strong>Conciliado</strong>.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>Las provisiones antiguas de ese empleado y el débito nuevo aparecen marcados como conciliados y comparten número de conciliación. Su saldo en la cuenta 26 queda cerrado de verdad, no en un cero de suma.</p>
+        </div>
+        <div class="flag warn">
+          <span class="tag">Si alguno no concilió</span>
+          <p>La liquidación tiene una columna oculta <strong>Error de conciliación</strong> en la lista de empleados: actívela con el icono de columnas, arriba a la derecha de la tabla. Un empleado que no concilie no tumba a los demás — el asiento ya está bien y el cruce se rehace a mano.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P9</div>
+      <div class="body">
+        <h3>No se puede liquidar dos veces lo mismo</h3>
+        <ol>
+          <li>Crear otra liquidación de <strong>Prima de servicios</strong> con el mismo corte, 31/12/2026.</li>
+          <li>Pulsar <strong>Cargar empleados</strong>.</li>
+        </ol>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>Los empleados que ya se conciliaron en el P7 <strong>no vuelven a salir</strong>. Si no queda nadie pendiente, sale un aviso diciendo que no hay nada en esa cuenta hasta esa fecha. Es la protección contra el doble pago: se leen solo apuntes sin conciliar.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div class="id">P10</div>
+      <div class="body">
+        <h3>Los errores dicen qué hacer</h3>
+        <p>Provoque los tres a propósito y compruebe que el mensaje se entiende:</p>
+        <ul>
+          <li><strong>Cancelar una liquidación ya contabilizada</strong> → se niega y le remite a anular o revertir el asiento primero, para que quede rastro del motivo.</li>
+          <li><strong>Volver a borrador una que ya tiene asiento</strong> → se niega, nombrando el asiento.</li>
+          <li><strong>Cargar empleados de una prestación sin nada pendiente</strong> → avisa de que o ya se liquidó, o las provisiones del periodo aún no se han contabilizado.</li>
+        </ul>
+        <div class="expect">
+          <span class="tag">Resultado esperado</span>
+          <p>Ningún mensaje en inglés, ninguna pantalla de error técnica, y en los tres casos se entiende cuál es el siguiente paso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Anatomía del asiento</h2>
+    <p>Conviene saber qué se está mirando. Por cada empleado se emiten dos líneas, o tres si hay diferencia:</p>
+
+    <div class="scroll">
+      <table>
+        <caption>Ejemplo: prima de 500.000 provisionados, 450.000 a pagar</caption>
+        <thead>
+          <tr><th>Cuenta</th><th>Concepto</th><th class="num">Debe</th><th class="num">Haber</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="acc">26102001</td><td>Sale de la provisión</td><td class="num">500.000</td><td class="num">—</td></tr>
+          <tr><td class="acc">252005</td><td>Entra en por pagar</td><td class="num">—</td><td class="num">450.000</td></tr>
+          <tr><td class="acc">51053601</td><td>Diferencia a gasto</td><td class="num">—</td><td class="num">50.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Se reparte empleado a empleado, y no en tres líneas globales, precisamente para que cada persona cuadre sola. Es lo que permite conciliar su provisión sin arrastrar los importes de los demás.</p>
+  </section>
+
+  <section>
+    <h2>Cómo deshacer</h2>
+    <p>La liquidación no se puede devolver a borrador una vez tiene asiento: es deliberado, para que no desaparezca el rastro. Para revertir el P7:</p>
+    <ol>
+      <li>Abrir el asiento desde el botón <strong>Asiento</strong>.</li>
+      <li>Usar <strong>Revertir</strong>, que genera el asiento inverso y deshace la conciliación.</li>
+      <li>La liquidación se queda en «Contabilizado» apuntando al asiento original. Anote en su chatter por qué se revirtió.</li>
+    </ol>
+    <div class="flag warn">
+      <span class="tag">Al estar en producción</span>
+      <p>No hay copia de seguridad reciente tomada para estas pruebas, ni forma de «volver atrás» la base entera sin perder el trabajo que otros hagan mientras tanto. La reversión del asiento es <strong>el</strong> mecanismo de vuelta atrás, y deja rastro, que es como debe ser en contabilidad. Si va a probar el P7, hágalo con una sola prestación y en un momento tranquilo.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Lo que este guion no cubre</h2>
+    <ul>
+      <li><strong>El pago.</strong> El módulo llega hasta la cuenta por pagar. Que el pago desde banco, Binance o el fondo cruce bien contra esa cuenta es otra prueba distinta.</li>
+      <li><strong>Las otras compañías.</strong> No tienen cuentas del grupo 26 que configurar.</li>
+      <li><strong>Los siete terceros antiguos</strong> de la liquidación manual de hace más de dos años. Se acordó no conciliarlos retroactivamente.</li>
+      <li><strong>Un entorno de pruebas de verdad.</strong> Existe uno en 54.198.146.146, pero su puerto no es accesible desde fuera de la máquina, así que no sirve para que valide alguien que no entre por SSH. Por eso se prueba aquí.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Al terminar</h2>
+    <p>Marque lo que haya quedado comprobado y devuelva el guion con las incidencias anotadas al lado del número de caso.</p>
+    <ul class="check">
+      <li>P1 · Las cuatro prestaciones se crearon y sus cuentas son correctas</li>
+      <li>P2 · Los permisos dejan fuera a quien no lleva contabilidad</li>
+      <li>P3 · Carga de empleados con importes creíbles</li>
+      <li>P4 · Aviso de corte fuera de calendario</li>
+      <li>P5 · Aviso de doble traslado desde la nómina</li>
+      <li>P6 · La diferencia se calcula sola</li>
+      <li>P7 · El asiento cuadra, y cuadra por empleado</li>
+      <li>P8 · La conciliación cierra el saldo de verdad</li>
+      <li>P9 · No se puede liquidar dos veces</li>
+      <li>P10 · Los mensajes de error se entienden</li>
+    </ul>
+
+    <div class="flag note">
+      <span class="tag">Al reportar una incidencia</span>
+      <p>Diga el número de caso, la referencia de la liquidación (<span class="mono">LP/2026/…</span>), el empleado si aplica y qué esperaba ver. Con eso se reproduce; con «no funciona», no.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Módulo <span class="mono">payroll_provisions</span> 18.0.1.1.0 en producción (<span class="mono">odoo.myintelli.net</span>). El repositorio va una versión por delante, 18.0.1.1.1, con una corrección que no cambia el comportamiento. Guion escrito el 4 de septiembre de 2026 — Hidelberg Martinez, Intelli Next.</p>
+  </footer>
+
+</div>
