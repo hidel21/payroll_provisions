@@ -341,7 +341,45 @@ class PayrollProvisionSettlement(models.Model):
                 dif=self.total_difference,
             )
         )
+        self._notify_accounting_manager()
         return True
+
+    def _notify_accounting_manager(self):
+        """Avisa a quien responde en contabilidad de que esto se contabilizó.
+
+        Liquidar es un acto de nómina y el asiento lo genera quien liquida, pero
+        el saldo que mueve es de contabilidad. Sin aviso, quien responde del
+        resultado se entera en el cierre, que es tarde para preguntar por qué
+        una diferencia se fue al gasto.
+
+        Se le suscribe además al hilo, para que cualquier cosa que se comente
+        después también le llegue. Si la compañía no tiene responsable
+        configurado no se hace nada: es una opción, no una obligación.
+        """
+        self.ensure_one()
+        responsable = self.company_id.provision_manager_id
+        if not responsable or responsable == self.env.user:
+            return
+
+        if responsable.partner_id:
+            self.message_subscribe(partner_ids=responsable.partner_id.ids)
+
+        self.message_post(
+            body=_(
+                "%(quien)s contabilizó esta liquidación de %(tipo)s con corte "
+                "al %(corte)s. Se trasladaron %(prov)s de %(cuenta_origen)s a "
+                "%(cuenta_destino)s, con %(dif)s de diferencia a gasto.",
+                quien=self.env.user.name,
+                tipo=self.type_id.name,
+                corte=self.date_cut,
+                prov=self.currency_id.format(self.total_provisioned),
+                cuenta_origen=self.type_id.provision_account_id.code or "",
+                cuenta_destino=self.type_id.payable_account_id.code or "",
+                dif=self.currency_id.format(self.total_difference),
+            ),
+            partner_ids=responsable.partner_id.ids,
+            subtype_xmlid="mail.mt_comment",
+        )
 
     def _prepare_move(self):
         """Un asiento con tres líneas por empleado, cuadradas entre sí.

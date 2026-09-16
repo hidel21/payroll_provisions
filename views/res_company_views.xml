@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_company_form_provisions" model="ir.ui.view">
+        <field name="name">res.company.form.prestaciones</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Prestaciones sociales" name="prestaciones"
+                      groups="account.group_account_manager">
+                    <group>
+                        <field name="provision_manager_id"
+                               options="{'no_create': True}"/>
+                    </group>
+                    <p class="text-muted">
+                        Liquidar prestaciones es un acto de nómina, pero el
+                        asiento que genera mueve saldos de pasivo y concilia
+                        apuntes. A esta persona se le avisa cada vez que se
+                        contabiliza una, con el detalle de lo trasladado, y
+                        queda suscrita al hilo para lo que se comente después.
+                    </p>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
