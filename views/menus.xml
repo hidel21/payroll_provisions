@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Cuelga de Contabilidad y no de Nómina a propósito: lo que hace es
-         mover saldos entre cuentas de pasivo, y quien responde de eso es
-         contabilidad. Restringido al mismo grupo que ya puede tocar asientos. -->
+    <!--
+        Las dos mitades del proceso viven donde se hacen, y no juntas:
+
+        * **Liquidar** es un acto de nómina. La prestación nace ahí —se
+          provisiona mes a mes con el recibo— y ahí se liquida al llegar el
+          corte. Quien lo hace es quien lleva la nómina, y no tiene por qué
+          entrar en Contabilidad para algo que es suyo.
+
+        * **Configurar las cuentas** es un acto de contabilidad. De qué cuenta
+          sale, a cuál va y adónde se manda la diferencia son decisiones del
+          plan contable, y quien responde de ellas es contabilidad.
+
+        Antes estaba todo bajo Contabilidad, y la parte operativa quedaba lejos
+        de quien la usa.
+    -->
+
+    <!-- Nómina: el acto de liquidar -->
     <menuitem id="menu_provisions_root"
               name="Prestaciones sociales"
-              parent="account.menu_finance_entries"
-              groups="account.group_account_manager"
-              sequence="25"/>
+              parent="om_hr_payroll.menu_hr_payroll_root"
+              groups="om_hr_payroll.group_hr_payroll_user,account.group_account_manager"
+              sequence="35"/>
 
     <menuitem id="menu_provision_settlement"
               name="Liquidaciones"
@@ -16,10 +30,12 @@
               action="action_provision_settlement"
               sequence="10"/>
 
+    <!-- Contabilidad: el ajuste de las cuentas -->
     <menuitem id="menu_provision_type"
-              name="Configuración de prestaciones"
-              parent="menu_provisions_root"
+              name="Prestaciones sociales"
+              parent="account.menu_finance_configuration"
               action="action_provision_type"
-              sequence="20"/>
+              groups="account.group_account_manager"
+              sequence="25"/>
 
 </odoo>
